@@ -1,0 +1,24 @@
+{
+  "name": "spotify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "elasticsearch": "^11.0.1",
+    "express": "^4.14.0",
+    "express-session": "^1.14.1",
+    "moment-timezone": "^0.5.5",
+    "mongoose": "^4.5.10",
+    "passport": "^0.3.2",
+    "passport-spotify": "^0.3.0",
+    "request": "^2.74.0",
+    "request-promise": "^4.1.1",
+    "twig": "^0.9.5"
+  }
+}

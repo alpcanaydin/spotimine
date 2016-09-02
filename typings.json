@@ -1,0 +1,10 @@
+{
+  "name": "shopsta-api",
+  "version": false,
+  "dependencies": {},
+  "ambientDependencies": {
+    "express": "registry:dt/express#4.0.0+20160317120654",
+    "mongoose": "registry:dt/mongoose#3.8.5+20160316155526",
+    "node": "registry:dt/node#4.0.0+20160412142033"
+  }
+}

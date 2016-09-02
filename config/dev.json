@@ -1,0 +1,28 @@
+{
+  "elastic": {
+    "host": "127.0.0.1",
+    "port": 9200,
+    "index": "spotify"
+  },
+
+  "mongodb": {
+    "host": "127.0.0.1",
+    "port": 27017,
+    "db": "spotify"
+  },
+
+  "spotify": {
+    "id": "7f87f6dab9494c6889c177cf72569dcd",
+    "secret": "f45b8b2b6b304ab384b00a53e4ddb038",
+    "callback": "http://spotify.dev/auth/spotify/callback",
+    "scope": [
+      "user-top-read"
+    ],
+    "api": "https://api.spotify.com/v1"
+  },
+
+  "session": {
+    "secret": "bf5a0a3a086245c2922c96d4f50a1cea",
+    "domain": ".spotify.dev"
+  }
+}

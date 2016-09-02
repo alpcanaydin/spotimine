@@ -1,0 +1,32 @@
+{% extends './layout.twig' %}
+
+{% block body %}
+  {% if not user %}
+    <h1>Spotimine</h1>
+    <p>User could not be found!</p>
+  {% else %}
+    <h1>Spotimine: {{ user.username }}</h1>
+    <hr>
+    <h2>Tracks</h2>
+    <ul>
+      {% for track in user.tracks %}
+        <li>
+          <a href="{{ track.uri }}">
+            {{ track.name }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+    <hr>
+    <h2>Artists</h2>
+    <ul>
+      {% for artist in user.artists %}
+        <li>
+          <a href="{{ artist.uri }}">
+            {{ artist.name }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}
