@@ -1,5 +1,14 @@
 {% extends './layout.twig' %}
 
+{% block meta %}
+<meta name="description" content="Learn what your most played songs and artists in Spotify and share with your friends!" />
+<meta property="og:image" content="{{ url }}/public/logo.jpg"/>
+<meta property="og:title" content="Spotimine" />
+<meta property="og:description" content="Learn what your most played songs and artists in Spotify and share with your friends!" />
+<meta property="og:url" content="{{ url }}"/>
+<link rel="canonical" href="{{ url }}"/>
+{% endblock %}
+
 {% block body %}
 <div id="intro">
   {% include './video.twig' %}
@@ -12,7 +21,7 @@
             {% include './logo.twig' %}
 
             <h1>
-              Learn what your most played tracks and artists in Spotify and share with your friends!
+              Learn what your most played songs and artists in Spotify and share with your friends!
             </h1>
           </div>
         </div>
@@ -28,5 +37,5 @@
   </div>
 </div>
 
-{% include './copyright.twig' %}
+{% include './copyright.twig' with { atHome: true } %}
 {% endblock %}

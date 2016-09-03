@@ -12,7 +12,7 @@
             {% include './logo.twig' %}
 
             <h1>
-              You did not give us a access :( <br>
+              You did not give us access :( <br>
               Let's try again?
             </h1>
           </div>
@@ -29,5 +29,5 @@
   </div>
 </div>
 
-{% include './copyright.twig' %}
+{% include './copyright.twig' with { atHome: true } %}
 {% endblock %}

@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const trackMapper = require('../lib/mapper/track');
+const msToTime = require('../lib/msToTime');
 
 const trackSchema = mongoose.Schema({
   album: {
@@ -72,6 +73,35 @@ const trackSchema = mongoose.Schema({
   timestamps: true
 });
 
+trackSchema
+  .virtual('artistsString')
+  .get(function () {
+    return this.artists
+      .map(
+        artist => `<a href="${artist.uri}">${artist.name}</a>`
+      )
+      .join(', ')
+    ;
+  })
+;
+
+trackSchema
+  .virtual('artistsStringPure')
+  .get(function () {
+    return this.artists
+      .map(artist => artist.name)
+      .join(', ')
+    ;
+  })
+;
+
+trackSchema
+  .virtual('durationTime')
+  .get(function () {
+    return msToTime(this.duration_ms);
+  })
+;
+
 trackSchema.statics.upsertFromSpotify = function (data) {
   const mappedData = trackMapper(data);
 
@@ -88,5 +118,6 @@ trackSchema.statics.upsertFromSpotify = function (data) {
     .then(track => track._id)
   ;
 };
+
 
 module.exports = mongoose.model('Track', trackSchema);

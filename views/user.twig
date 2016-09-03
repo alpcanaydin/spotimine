@@ -1,32 +1,296 @@
 {% extends './layout.twig' %}
 
-{% block body %}
-  {% if not user %}
-    <h1>Spotimine</h1>
-    <p>User could not be found!</p>
-  {% else %}
-    <h1>Spotimine: {{ user.username }}</h1>
-    <hr>
-    <h2>Tracks</h2>
-    <ul>
-      {% for track in user.tracks %}
-        <li>
-          <a href="{{ track.uri }}">
-            {{ track.name }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-    <hr>
-    <h2>Artists</h2>
-    <ul>
-      {% for artist in user.artists %}
-        <li>
-          <a href="{{ artist.uri }}">
-            {{ artist.name }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
+{% block title %}{{ username }} on Spotimine{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Most played songs and artists for {{ username }} in Spotify" />
+{% if user and user.images | length %}
+  <meta property="og:image" content="{{ user.images[0].url }}"/>
+{% else %}
+  <meta property="og:image" content="{{ url }}/public/logo.jpg"/>
+{% endif %}
+<meta property="og:title" content="{{ username }} on Spotimine" />
+<meta property="og:description" content="Most played songs and artists for {{ username }} in Spotify" />
+<meta property="og:url" content="{{ url }}/{{ username }}"/>
+<link rel="canonical" href="{{ url }}/{{ username }}"/>
+{% endblock %}
+
+{% block head %}
+  {% if user %}
+    <script src="https://npmcdn.com/imagesloaded@4.1.1/imagesloaded.pkgd.min.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4.1/dist/masonry.pkgd.min.js"></script>
   {% endif %}
+{% endblock %}
+
+{% block afterBody %}
+  {% if user %}
+    <script>
+      var elem = document.querySelector('.grid');
+      var loading = document.querySelector('.artist-loading');
+
+      imagesLoaded(elem, function( instance ) {
+        loading.style.display = 'none';
+        elem.style.display = 'block';
+
+        var msnry = new Masonry( elem, {
+          itemSelector: '.grid-item',
+          columnWidth: '.grid-item',
+          percentPosition: true
+        });
+      });
+    </script>
+  {% endif %}
+{% endblock %}
+
+{% block beforeBody %}
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '726863427470981',
+      xfbml      : true,
+      version    : 'v2.7'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+{% endblock %}
+
+{% block body %}
+  <div class="user">
+    <div class="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-sm-5 col-xs-5">
+            <div class="logo">
+              <a href="/">
+                <i class="fa fa-play-circle"></i> spotimine
+              </a>
+            </div>
+          </div>
+          <div class="col-md-8 col-sm-7 col-xs-7 text-right">
+            {% if currentUser and user and currentUser.id == user.id %}
+              <a href="/logout" class="spotify-login small">
+                Log out
+              </a>
+            {% elseif currentUser and user and currentUser.id != user.id %}
+              <a href="/{{ currentUser.username }}" class="spotify-login small">
+                Go to profile
+              </a>
+            {% else %}
+              <a href="/auth/spotify" class="spotify-login small">
+                Make your own
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if user %}
+      <div class="profile">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+              <div class="row">
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <a href="{{ user.uri }}" class="avatar">
+                    {% if user.images | length %}
+                      <img src="{{ user.images[0].url }}" class="img-responsive" alt="@{{ user.username }} on spotimine">
+                    {% else %}
+                      <img src="/public/no-avatar.png" class="img-responsive" alt="@{{ user.username }} on spotimine">
+                    {% endif %}
+                  </a>
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                  <div class="profile-info">
+                    <div class="username">
+                      {% if user.displayName %}
+                        {{ user.displayName }}
+                        <span>{{ user.username }}</span>
+                      {% else %}
+                        {{ user.username }}
+                      {% endif %}
+                    </div>
+
+                    <div class="data">
+                      <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                          <strong>
+                            {% if user.followers %}
+                              {{ user.followers.total }}
+                            {% else %}
+                              Unknown
+                            {% endif %}
+                          </strong>
+                          Followers
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4 hidden-xs">
+                          <strong>
+                            {{ user.tracks | length }}
+                          </strong>
+                          Tracks
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4 hidden-xs">
+                          <strong>{{ user.artists | length }}</strong>
+                          Artists
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="social hidden-xs">
+                      <div class="row">
+                        <div class="col-md-2 col-sm-2 col-xs-6">
+                          <div
+                            class="fb-share-button"
+                            data-layout="button_count"
+                            data-size="small"
+                            data-mobile-iframe="true"
+                          ></div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-6">
+                          <a class="twitter-share-button"
+                            href="https://twitter.com/share"
+                            data-size="small"
+                            data-hashtags="spotimine"
+                            data-url="https://spotimine.com/{{ user.username }}"
+                            data-text="Look at my spotimine profile!">
+                          Tweet
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="list tracks">
+          <h2>Most Played Songs</h2>
+          {% if user.tracks %}
+            <table class="table table-hover desktop hidden-xs hidden-sm">
+              <thead>
+                <tr>
+                  <th style="width: 5%">#</th>
+                  <th style="width: 30%">Song</th>
+                  <th style="width: 25%">Artist</th>
+                  <th style="width: 25%">Album</th>
+                  <th style="width: 10%">Duration</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for track in user.tracks %}
+                  <tr ondblclick="window.location.href = '{{ track.uri }}'">
+                    <td>{{ loop.index }}</td>
+                    <td>
+                      <a href="{{ track.uri }}">
+                        {{ track.name }}
+                      </a>
+                    </td>
+                    <td>{{ track.artistsString | raw }}</td>
+                    <td>
+                      <a href="{{ track.album.uri }}">
+                        {{ track.album.name }}
+                      </a>
+                    </td>
+                    <td>
+                      {{ track.durationTime }}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            <table class="table table-hover mobile hidden-md hidden-lg">
+              <tbody>
+                {% for track in user.tracks %}
+                  <tr>
+                    <td>
+                      <a href="{{ track.uri }}">
+                        {{ loop.index }}. {{ track.name }}<br>
+                        <small>{{ track.artistsStringPure }}</small>
+                      </a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <p class="no-data">
+              There is no track for this user.
+            </p>
+          {% endif %}
+        </div>
+
+        <div class="list artists">
+          <h2>Most Played Artists</h2>
+          {% if user.artists %}
+            <p class="artist-loading">LOADING</p>
+            <div class="row">
+              <div class="grid" style="display: none;">
+                {% for artist in user.artists %}
+                  <div class="grid-item col-md-3 col-sm-6 col-xs-6">
+                    <a href="{{ artist.uri }}" class="artist">
+                      {% if artist.images | length %}
+                        <img src="{{ artist.images[0].url }}" class="img-responsive" alt="{{ artist.name }}">
+                      {% else %}
+                        <img src="/public/no-image.jpg" class="img-responsive" alt="{{ artist.name }}">
+                      {% endif %}
+                      <span>{{ loop.index }}. {{ artist.name }}</span>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% else %}
+            <p class="no-data">
+              There is no artist for this user.
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    {% else %}
+      <div class="container">
+        <div class="no-user text-center">
+          <h2>
+            User could not be found. Is this you? <br>
+            Then create your Spotimine profile now!
+          </h2>
+          <a href="/auth/spotify" class="spotify-login">
+            Login with Spotify
+          </a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+{% if user %}
+  {% include './copyright.twig' %}
+{% endif %}
 {% endblock %}

@@ -1,10 +1,13 @@
 'use strict';
 
 const User = require('../model/user');
+const config = require('../lib/config');
 
 module.exports = (req, res) => {
+  const username = req.params.username;
+
   User
-    .findOne({ username: req.params.username })
+    .findOne({ username })
     .populate([
       {
         path: 'artists',
@@ -12,10 +15,16 @@ module.exports = (req, res) => {
       },
       {
         path: 'tracks',
-        select: 'id spotify_id name uri href popularity album artists duration_ms'
+        select: 'id spotify_id name uri href popularity album artists duration_ms artistsString artistsStringPure durationTime'
       }
     ])
-    .then(user => res.render('user', { user }))
+    .then(user => res.render('user', {
+      username,
+      user,
+      currentUser: req.user,
+      bodyClass: 'user-body',
+      url: config.url
+    }))
     .catch(() => res.redirect('/error'))
   ;
 };

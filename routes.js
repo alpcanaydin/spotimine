@@ -4,6 +4,7 @@ const homeCtrl = require('./controller/home');
 const spotifyAuthCtrl = require('./controller/auth/spotify/spotify');
 const spotifyCallbackCtrl = require('./controller/auth/spotify/callback');
 const noAccessCtrl = require('./controller/noAccess');
+const logoutCtrl = require('./controller/logout');
 const errorCtrl = require('./controller/error');
 const userCtrl = require('./controller/user');
 
@@ -21,6 +22,7 @@ module.exports = function (app, middlewares) {
 
   app.get('/no-access', noAccessCtrl);
   app.get('/error', errorCtrl);
+  app.get('/logout', logoutCtrl);
 
   app.get('/:username', userCtrl);
 };

@@ -6,18 +6,21 @@
     {% block title %}Spotimine{% endblock %}
   </title>
 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+
   {% block meta %}{% endblock %}
 
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name=viewport content="width=device-width, initial-scale=1, user-scalable=0">
-
+  <link rel="icon" type="image/png" href="/public/favicon.png" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600&subset=latin-ext" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-  <link rel="stylesheet" href="/public/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600&subset=latin-ext" rel="stylesheet">
+  <link rel="stylesheet" href="/public/style.min.css">
   {% block head %}{% endblock %}
 </head>
-<body>
+<body {% if bodyClass is defined %}class="{{ bodyClass }}"{% endif %}>
+  {% block beforeBody %}{% endblock %}
   {% block body %}{% endblock %}
+  {% block afterBody %}{% endblock %}
 </body>
 </html>
