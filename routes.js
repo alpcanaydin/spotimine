@@ -7,6 +7,7 @@ const noAccessCtrl = require('./controller/noAccess');
 const logoutCtrl = require('./controller/logout');
 const errorCtrl = require('./controller/error');
 const userCtrl = require('./controller/user');
+const saveAsPlaylist = require('./controller/spotify').saveAsPlaylist;
 
 module.exports = function (app, middlewares) {
   app.get('/', homeCtrl);
@@ -20,6 +21,7 @@ module.exports = function (app, middlewares) {
     spotifyCallbackCtrl(middlewares.passport)
   );
 
+  app.get('/save-as-playlist/:username',saveAsPlaylist);
   app.get('/no-access', noAccessCtrl);
   app.get('/error', errorCtrl);
   app.get('/logout', logoutCtrl);

@@ -18,7 +18,10 @@
     "secret": "f45b8b2b6b304ab384b00a53e4ddb038",
     "callback": "http://spotify.dev/auth/spotify/callback",
     "scope": [
-      "user-top-read"
+      "user-top-read",
+      "playlist-modify",
+      "playlist-modify-public",
+      "playlist-modify-private"
     ],
     "api": "https://api.spotify.com/v1"
   },
