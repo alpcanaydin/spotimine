@@ -18,6 +18,11 @@ module.exports = passport => (req, res, next) => {
         return;
       }
 
+      if (req.session.savePlaylist) {
+        res.redirect(`/save-as-playlist/${req.session.savePlaylist}`);
+        return;
+      }
+
       res.redirect('/');
     });
   })(req, res, next);

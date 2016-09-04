@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Artist = require('./artist');
 const Track = require('./track');
 const request = require('../lib/request');
+const playlistManager = require('../lib/playlist');
 
 const userSchema = mongoose.Schema({
   private: {
@@ -63,6 +64,17 @@ const userSchema = mongoose.Schema({
   artists: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Artist'
+  }],
+
+  playlists: [{
+    playlistId: {
+      type: String
+    },
+
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
   }]
 }, {
   timestamps: true
@@ -79,6 +91,25 @@ userSchema.statics.upsertBySpotify = function (data) {
 
       const newUser = new this(data);
       return newUser.save();
+    })
+  ;
+};
+
+userSchema.statics.createPlaylistForUser = function (user, currentUser) {
+  const playlistName = `Best of ${user.displayName || user.username}`;
+
+  return playlistManager
+    .createPlaylist(currentUser, playlistName)
+    .then(playlistId => playlistManager.addTracks(currentUser, user.tracks, playlistId))
+    .then(playlistId => {
+      const playlists = currentUser.playlists || [];
+      playlists.push({
+        playlistId,
+        user: user._id
+      });
+
+      currentUser.playlists = playlists;
+      return currentUser.save();
     })
   ;
 };

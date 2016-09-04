@@ -18,13 +18,30 @@ module.exports = (req, res) => {
         select: 'id spotify_id name uri href popularity album artists duration_ms artistsString artistsStringPure durationTime'
       }
     ])
-    .then(user => res.render('user', {
-      username,
-      user,
-      currentUser: req.user,
-      bodyClass: 'user-body',
-      url: config.url
-    }))
-    .catch(() => res.redirect('/error'))
+    .then(user => {
+      let playlistUri = false;
+
+      if (user && req.user) {
+        for (const playlist of req.user.playlists) {
+          if (playlist.user.toString() === user._id.toString()) {
+            playlistUri = `spotify:user:${req.user.username}:playlist:${playlist.playlistId}`;
+            break;
+          }
+        }
+      }
+
+      return res.render('user', {
+        playlistUri,
+        username,
+        user,
+        currentUser: req.user,
+        bodyClass: 'user-body',
+        url: config.url
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.redirect('/error');
+    })
   ;
 };

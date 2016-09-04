@@ -114,7 +114,7 @@
               </a>
             {% else %}
               <a href="/auth/spotify" class="spotify-login small">
-                Make your own
+                Log in
               </a>
             {% endif %}
           </div>
@@ -207,10 +207,32 @@
 
       <div class="container">
         <div class="list tracks">
-          <h2>Most Played Songs {% if playlistURI is defined %}<a
-              href="{{ playlistURI }}"> <i class="fa fa-play-circle"></i> Play All</a>{% else %}<a
-              href="/save-as-playlist/{{ user.username }}"> <i class="fa fa-floppy-o"></i> Save As
-                Playlist</a>{% endif %} </h2>
+          <h2>
+            <div class="pull-left">
+              Most Played Songs
+            </div>
+
+            {% if user.tracks | length %}
+              <div class="pull-right">
+                {% if playlistUri %}
+                  <a href="{{ playlistUri }}">
+                    <i class="fa fa-play-circle"></i> Play
+                  </a>
+                {% else %}
+                  <a href="/save-as-playlist/{{ user.username }}">
+                    <i class="fa fa-floppy-o"></i>
+                    <span class="hidden-xs">
+                      Save As Playlist
+                    </span>
+                    <span class="hidden-sm hidden-md hidden-lg">
+                      Save
+                    </span>
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
+            <div class="clearfix"></div>
+          </h2>
           {% if user.tracks %}
             <table class="table table-hover desktop hidden-xs hidden-sm">
               <thead>
