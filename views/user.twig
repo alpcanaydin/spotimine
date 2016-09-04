@@ -2,27 +2,27 @@
 
 {% block title %}
   {% if user and user.displayName %}
-    {{ user.displayName}} on Spotimine
+    {{ user.displayName }} on Spotimine
   {% else %}
     {{ username }} on Spotimine
   {% endif %}
 {% endblock %}
 
 {% block meta %}
-<meta name="description" content="Most played songs and artists for {{ username }} in Spotify" />
-{% if user and user.images | length %}
-  <meta property="og:image" content="{{ user.images[0].url }}"/>
-{% else %}
-  <meta property="og:image" content="{{ url }}/public/logo.jpg"/>
-{% endif %}
-{% if user and user.displayName %}
-  <meta property="og:title" content="{{ user.displayName}} on Spotimine" />
-{% else %}
-  <meta property="og:title" content="{{ username }} on Spotimine" />
-{% endif %}
-<meta property="og:description" content="Most played songs and artists for {{ username }} in Spotify" />
-<meta property="og:url" content="{{ url }}/{{ username }}"/>
-<link rel="canonical" href="{{ url }}/{{ username }}"/>
+  <meta name="description" content="Most played songs and artists for {{ username }} in Spotify"/>
+  {% if user and user.images | length %}
+    <meta property="og:image" content="{{ user.images[0].url }}"/>
+  {% else %}
+    <meta property="og:image" content="{{ url }}/public/logo.jpg"/>
+  {% endif %}
+  {% if user and user.displayName %}
+    <meta property="og:title" content="{{ user.displayName }} on Spotimine"/>
+  {% else %}
+    <meta property="og:title" content="{{ username }} on Spotimine"/>
+  {% endif %}
+  <meta property="og:description" content="Most played songs and artists for {{ username }} in Spotify"/>
+  <meta property="og:url" content="{{ url }}/{{ username }}"/>
+  <link rel="canonical" href="{{ url }}/{{ username }}"/>
 {% endblock %}
 
 {% block head %}
@@ -38,11 +38,11 @@
       var elem = document.querySelector('.grid');
       var loading = document.querySelector('.artist-loading');
 
-      imagesLoaded(elem, function( instance ) {
+      imagesLoaded(elem, function (instance) {
         loading.style.display = 'none';
         elem.style.display = 'block';
 
-        var msnry = new Masonry( elem, {
+        var msnry = new Masonry(elem, {
           itemSelector: '.grid-item',
           columnWidth: '.grid-item',
           percentPosition: true
@@ -53,39 +53,42 @@
 {% endblock %}
 
 {% block beforeBody %}
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '726863427470981',
-      xfbml      : true,
-      version    : 'v2.7'
-    });
-  };
+  <script>
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '726863427470981',
+        xfbml: true,
+        version: 'v2.7'
+      });
+    };
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>
-<script>window.twttr = (function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0],
-    t = window.twttr || {};
-  if (d.getElementById(id)) return t;
-  js = d.createElement(s);
-  js.id = id;
-  js.src = "https://platform.twitter.com/widgets.js";
-  fjs.parentNode.insertBefore(js, fjs);
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
+  <script>window.twttr = (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
 
-  t._e = [];
-  t.ready = function(f) {
-    t._e.push(f);
-  };
+      t._e = [];
+      t.ready = function (f) {
+        t._e.push(f);
+      };
 
-  return t;
-}(document, "script", "twitter-wjs"));</script>
+      return t;
+    }(document, "script", "twitter-wjs"));</script>
 {% endblock %}
 
 {% block body %}
@@ -128,9 +131,11 @@
                 <div class="col-md-3 col-sm-3 col-xs-3">
                   <a href="{{ user.uri }}" class="avatar">
                     {% if user.images | length %}
-                      <img src="{{ user.images[0].url }}" class="img-responsive" alt="@{{ user.username }} on spotimine">
+                      <img src="{{ user.images[0].url }}" class="img-responsive"
+                           alt="@{{ user.username }} on spotimine">
                     {% else %}
-                      <img src="/public/no-avatar.png" class="img-responsive" alt="@{{ user.username }} on spotimine">
+                      <img src="/public/no-avatar.png" class="img-responsive"
+                           alt="@{{ user.username }} on spotimine">
                     {% endif %}
                   </a>
                 </div>
@@ -182,12 +187,12 @@
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-6">
                           <a class="twitter-share-button"
-                            href="https://twitter.com/share"
-                            data-size="small"
-                            data-hashtags="spotimine"
-                            data-url="http://spotimine.com/{{ user.username }}"
-                            data-text="Look at my spotimine profile!">
-                          Tweet
+                             href="https://twitter.com/share"
+                             data-size="small"
+                             data-hashtags="spotimine"
+                             data-url="http://spotimine.com/{{ user.username }}"
+                             data-text="Look at my spotimine profile!">
+                            Tweet
                           </a>
                         </div>
                       </div>
@@ -202,53 +207,56 @@
 
       <div class="container">
         <div class="list tracks">
-          <h2>Most Played Songs</h2>
+          <h2>Most Played Songs {% if playlistURI is defined %}<a
+              href="{{ playlistURI }}"> <i class="fa fa-play-circle"></i> Play All</a>{% else %}<a
+              href="/save-as-playlist/{{ user.username }}"> <i class="fa fa-floppy-o"></i> Save As
+                Playlist</a>{% endif %} </h2>
           {% if user.tracks %}
             <table class="table table-hover desktop hidden-xs hidden-sm">
               <thead>
-                <tr>
-                  <th style="width: 5%">#</th>
-                  <th style="width: 30%">Song</th>
-                  <th style="width: 25%">Artist</th>
-                  <th style="width: 25%">Album</th>
-                  <th style="width: 10%">Duration</th>
-                </tr>
+              <tr>
+                <th style="width: 5%">#</th>
+                <th style="width: 30%">Song</th>
+                <th style="width: 25%">Artist</th>
+                <th style="width: 25%">Album</th>
+                <th style="width: 10%">Duration</th>
+              </tr>
               </thead>
               <tbody>
-                {% for track in user.tracks %}
-                  <tr ondblclick="window.location.href = '{{ track.uri }}'">
-                    <td>{{ loop.index }}</td>
-                    <td>
-                      <a href="{{ track.uri }}">
-                        {{ track.name }}
-                      </a>
-                    </td>
-                    <td>{{ track.artistsString | raw }}</td>
-                    <td>
-                      <a href="{{ track.album.uri }}">
-                        {{ track.album.name }}
-                      </a>
-                    </td>
-                    <td>
-                      {{ track.durationTime }}
-                    </td>
-                  </tr>
-                {% endfor %}
+              {% for track in user.tracks %}
+                <tr ondblclick="window.location.href = '{{ track.uri }}'">
+                  <td>{{ loop.index }}</td>
+                  <td>
+                    <a href="{{ track.uri }}">
+                      {{ track.name }}
+                    </a>
+                  </td>
+                  <td>{{ track.artistsString | raw }}</td>
+                  <td>
+                    <a href="{{ track.album.uri }}">
+                      {{ track.album.name }}
+                    </a>
+                  </td>
+                  <td>
+                    {{ track.durationTime }}
+                  </td>
+                </tr>
+              {% endfor %}
               </tbody>
             </table>
 
             <table class="table table-hover mobile hidden-md hidden-lg">
               <tbody>
-                {% for track in user.tracks %}
-                  <tr>
-                    <td>
-                      <a href="{{ track.uri }}">
-                        {{ loop.index }}. {{ track.name }}<br>
-                        <small>{{ track.artistsStringPure }}</small>
-                      </a>
-                    </td>
-                  </tr>
-                {% endfor %}
+              {% for track in user.tracks %}
+                <tr>
+                  <td>
+                    <a href="{{ track.uri }}">
+                      {{ loop.index }}. {{ track.name }}<br>
+                      <small>{{ track.artistsStringPure }}</small>
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
               </tbody>
             </table>
           {% else %}
@@ -268,9 +276,11 @@
                   <div class="grid-item col-md-3 col-sm-6 col-xs-6">
                     <a href="{{ artist.uri }}" class="artist">
                       {% if artist.images | length %}
-                        <img src="{{ artist.images[0].url }}" class="img-responsive" alt="{{ artist.name }}">
+                        <img src="{{ artist.images[0].url }}" class="img-responsive"
+                             alt="{{ artist.name }}">
                       {% else %}
-                        <img src="/public/no-image.jpg" class="img-responsive" alt="{{ artist.name }}">
+                        <img src="/public/no-image.jpg" class="img-responsive"
+                             alt="{{ artist.name }}">
                       {% endif %}
                       <span>{{ loop.index }}. {{ artist.name }}</span>
                     </a>
@@ -300,7 +310,7 @@
     {% endif %}
   </div>
 
-{% if user %}
-  {% include './copyright.twig' %}
-{% endif %}
+  {% if user %}
+    {% include './copyright.twig' %}
+  {% endif %}
 {% endblock %}
