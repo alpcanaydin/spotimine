@@ -7,7 +7,7 @@ const noAccessCtrl = require('./controller/noAccess');
 const logoutCtrl = require('./controller/logout');
 const errorCtrl = require('./controller/error');
 const userCtrl = require('./controller/user');
-const saveAsPlaylist = require('./controller/saveAsplaylist');
+const saveAsPlaylist = require('./controller/saveAsPlaylist');
 
 module.exports = function (app, middlewares) {
   app.get('/', homeCtrl);
